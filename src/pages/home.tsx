@@ -54,6 +54,11 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     padding: 0,
+    display: 'flex',
+  },
+  webview: {
+    padding: 0,
+    flexGrow: 1,
   },
 }));
 
@@ -96,6 +101,16 @@ const Home = () => {
         <div className={classes.appBarSpacer} />
         <div className={classes.container}>
           <LocalFolder />
+          <div className={classes.webview}>
+            <webview
+              src="https://github.com/ratovia/rocketdev"
+              style={{
+                display: 'inline-flex',
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          </div>
         </div>
       </main>
     </div>

@@ -3,27 +3,26 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import GitHubIcon from '@material-ui/icons/GitHub';
 
 export const MainListItems = () => {
   return (
     <div>
       <ListItem button>
         <ListItemIcon>
-          <DashboardIcon />
+          <GitHubIcon />
         </ListItemIcon>
-        <ListItemText primary="Dashboard" />
+        <ListItemText primary="Github" />
       </ListItem>
       <ListItem button>
         <ListItemIcon>
-          <ShoppingCartIcon />
+          <LayersIcon />
         </ListItemIcon>
-        <ListItemText primary="Orders" />
+        <ListItemText primary="Manuals" />
       </ListItem>
       <ListItem button>
         <ListItemIcon>

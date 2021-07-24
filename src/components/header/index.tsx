@@ -70,7 +70,7 @@ const Header = ({ open, handleDrawerOpen }: Props) => {
           noWrap
           className={classes.title}
         >
-          Dashboard
+          Github
         </Typography>
       </Toolbar>
     </AppBar>
