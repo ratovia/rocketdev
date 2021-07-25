@@ -12,7 +12,7 @@ interface Props {
   url: string;
 }
 
-const GitbubWebview = ({ url }: Props) => {
+const GithubWebview = ({ url }: Props) => {
   const classes = useStyles();
 
   return (
@@ -29,4 +29,4 @@ const GitbubWebview = ({ url }: Props) => {
   );
 };
 
-export default GitbubWebview;
+export default GithubWebview;
