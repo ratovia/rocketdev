@@ -10,6 +10,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { MainListItems, SecondaryListItems } from '../components/menuItem';
 import Header from '../components/header';
 import LocalFolder from '../components/localFolder';
+import GitbubWebview from '../components/webview/githubWebview';
 
 const drawerWidth = 240;
 
@@ -101,16 +102,7 @@ const Home = () => {
         <div className={classes.appBarSpacer} />
         <div className={classes.container}>
           <LocalFolder />
-          <div className={classes.webview}>
-            <webview
-              src="https://github.com/ratovia/rocketdev"
-              style={{
-                display: 'inline-flex',
-                width: '100%',
-                height: '100%',
-              }}
-            />
-          </div>
+          <GitbubWebview url="https://github.com/ratovia/rocketdev" />
         </div>
       </main>
     </div>
