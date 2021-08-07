@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,12 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { MainListItems, SecondaryListItems } from '../components/menuItem';
 import Header from '../components/header';
-import LocalFolder from '../components/localFolder';
-import GithubWebview from '../components/webview/githubWebview';
-import {
-  Repository,
-  useRepositoryReducer,
-} from '../hooks/useRepositoryReducer';
+import GithubContents from '../components/githubContents';
 
 const drawerWidth = 240;
 
@@ -69,30 +64,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
-  const [currentFolder, setCurrentFolder] = useState('');
+  const [open, setOpen] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [repositories, repositoriesDispatch] = useRepositoryReducer();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  const handleCurrentFolderChange = (folder: string) => {
-    setCurrentFolder(folder);
-  };
-
-  const getMatchFolder: (folder: string) => Repository = (folder: string) => {
-    return repositories.filter(
-      (repository) => repository.folderName === folder
-    )[0];
-  };
-
-  useEffect(() => {
-    repositoriesDispatch({ type: 'fetch', payload: {} });
-  }, []);
 
   return (
     <div className={classes.root}>
@@ -122,12 +101,7 @@ const Home = () => {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <div className={classes.container}>
-          <LocalFolder handleCurrentFolderChange={handleCurrentFolderChange} />
-          {currentFolder && (
-            <GithubWebview
-              url={getMatchFolder(currentFolder).remoteOriginUrl}
-            />
-          )}
+          <GithubContents />
         </div>
       </main>
     </div>
