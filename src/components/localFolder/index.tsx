@@ -18,7 +18,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LocalFolder = () => {
+interface Props {
+  handleCurrentFolderChange: (folder: string) => void;
+}
+
+const LocalFolder = ({ handleCurrentFolderChange }: Props) => {
   const classes = useStyles();
   const [folders, setFolders] = React.useState([]);
 
@@ -30,10 +34,13 @@ const LocalFolder = () => {
   return (
     <List className={classes.menuContainer}>
       <ListSubheader inset>Local Folders</ListSubheader>
-      {folders.map((folder, index) => {
+      {folders.map((folder) => {
         return (
-          // eslint-disable-next-line react/no-array-index-key
-          <ListItem button key={index}>
+          <ListItem
+            button
+            key={folder}
+            onClick={() => handleCurrentFolderChange(folder)}
+          >
             <ListItemText primary={folder} />
           </ListItem>
         );

@@ -16,6 +16,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 
+const simpleGit = require('simple-git');
 const fs = require('fs');
 
 export default class AppUpdater {
@@ -142,4 +143,21 @@ ipcMain.on('sync-file-directory', (event, arg) => {
     event.returnValue = files.join(',');
     return true;
   });
+});
+
+const gitRemoteURL = async (filePath: string) => {
+  try {
+    const git = simpleGit(filePath);
+    return await git.remote(['get-url', 'origin']);
+  } catch {
+    return '';
+  }
+};
+
+// ファイル名をもらって、リモートリポジトリのURLを返す
+ipcMain.on('sync-remote-repository', async (event, arg) => {
+  const fileName = arg;
+  const filePath = `/Users/tech-camp/workspace/${fileName}`;
+  const url: string = await gitRemoteURL(filePath);
+  event.returnValue = url;
 });
