@@ -10,8 +10,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { MainListItems, SecondaryListItems } from '../components/menuItem';
 import Header from '../components/header';
 import GithubContents from '../components/githubContents';
+import ManualContents from '../components/manualContents';
 
 const drawerWidth = 240;
+const DEFAULT_CONTENT = 'Github';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,12 +67,16 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [currentContents, setCurrentContents] = useState(DEFAULT_CONTENT);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+  const handleChangeMenu = (menu: string) => {
+    setCurrentContents(menu);
   };
 
   return (
@@ -91,17 +97,18 @@ const Home = () => {
         </div>
         <Divider />
         <List>
-          <MainListItems />
+          <MainListItems handleChangeMenu={handleChangeMenu} />
         </List>
         <Divider />
         <List>
-          <SecondaryListItems />
+          <SecondaryListItems handleChangeMenu={handleChangeMenu} />
         </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <div className={classes.container}>
-          <GithubContents />
+          {currentContents === 'Github' && <GithubContents />}
+          {currentContents === 'Manuals' && <ManualContents />}
         </div>
       </main>
     </div>

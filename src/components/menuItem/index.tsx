@@ -9,65 +9,64 @@ import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import GitHubIcon from '@material-ui/icons/GitHub';
 
-export const MainListItems = () => {
+interface Props {
+  handleChangeMenu: (name: string) => void;
+}
+
+type Lists = {
+  name: string;
+  menuIcons: JSX.Element;
+};
+
+const mainMenu: Lists[] = [
+  { name: 'Github', menuIcons: <GitHubIcon /> },
+  { name: 'Manuals', menuIcons: <LayersIcon /> },
+  { name: 'Customers', menuIcons: <PeopleIcon /> },
+  { name: 'Reports', menuIcons: <BarChartIcon /> },
+  { name: 'Integrations', menuIcons: <LayersIcon /> },
+];
+
+const secondaryMenu: Lists[] = [
+  { name: 'Memo', menuIcons: <AssignmentIcon /> },
+  { name: 'Tasks', menuIcons: <AssignmentIcon /> },
+  { name: 'Calender', menuIcons: <AssignmentIcon /> },
+];
+
+export const MainListItems = ({ handleChangeMenu }: Props) => {
   return (
     <div>
-      <ListItem button>
-        <ListItemIcon>
-          <GitHubIcon />
-        </ListItemIcon>
-        <ListItemText primary="Github" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <LayersIcon />
-        </ListItemIcon>
-        <ListItemText primary="Manuals" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <PeopleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Customers" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <BarChartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Reports" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <LayersIcon />
-        </ListItemIcon>
-        <ListItemText primary="Integrations" />
-      </ListItem>
+      {mainMenu.map((menu) => {
+        return (
+          <ListItem
+            key={menu.name}
+            button
+            onClick={() => handleChangeMenu(menu.name)}
+          >
+            <ListItemIcon>{menu.menuIcons}</ListItemIcon>
+            <ListItemText primary={menu.name} />
+          </ListItem>
+        );
+      })}
     </div>
   );
 };
 
-export const SecondaryListItems = () => {
+export const SecondaryListItems = ({ handleChangeMenu }: Props) => {
   return (
     <div>
-      <ListSubheader inset>Saved reports</ListSubheader>
-      <ListItem button>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="Current month" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="Last quarter" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="Year-end sale" />
-      </ListItem>
+      <ListSubheader inset>Self Management</ListSubheader>
+      {secondaryMenu.map((menu) => {
+        return (
+          <ListItem
+            key={menu.name}
+            button
+            onClick={() => handleChangeMenu(menu.name)}
+          >
+            <ListItemIcon>{menu.menuIcons}</ListItemIcon>
+            <ListItemText primary={menu.name} />
+          </ListItem>
+        );
+      })}
     </div>
   );
 };

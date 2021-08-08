@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { ipcRenderer } from 'electron';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -18,30 +17,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const manualList = [
+  { name: 'React', url: 'https://ja.reactjs.org' },
+  { name: 'MaterialUI', url: 'https://material-ui.com' },
+];
 interface Props {
-  handleCurrentFolderChange: (folder: string) => void;
+  handleCurrentManualURLChange: (url: string) => void;
 }
 
-const LocalFolder = ({ handleCurrentFolderChange }: Props) => {
+const ManualList = ({ handleCurrentManualURLChange }: Props) => {
   const classes = useStyles();
-  const [folders, setFolders] = useState([]);
-
-  useEffect(() => {
-    const fileDirectory = ipcRenderer.sendSync('sync-file-directory', '');
-    setFolders(fileDirectory.split(','));
-  }, []);
+  // eslint-disable-next-line
+  const [manuals, setManuals] = useState(manualList);
 
   return (
     <List className={classes.menuContainer}>
-      <ListSubheader inset>Local Folders</ListSubheader>
-      {folders.map((folder) => {
+      <ListSubheader inset>Manuals</ListSubheader>
+      {manuals.map((manual) => {
         return (
           <ListItem
             button
-            key={folder}
-            onClick={() => handleCurrentFolderChange(folder)}
+            key={manual.name}
+            onClick={() => handleCurrentManualURLChange(manual.url)}
           >
-            <ListItemText primary={folder} />
+            <ListItemText primary={manual.name} />
           </ListItem>
         );
       })}
@@ -49,4 +48,4 @@ const LocalFolder = ({ handleCurrentFolderChange }: Props) => {
   );
 };
 
-export default LocalFolder;
+export default ManualList;
