@@ -41,26 +41,26 @@ if (
   require('electron-debug')();
 }
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+// const installExtensions = async () => {
+//   const installer = require('electron-devtools-installer');
+//   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+//   const extensions = ['REACT_DEVELOPER_TOOLS'];
 
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
-    .catch(console.log);
-};
+//   return installer
+//     .default(
+//       extensions.map((name) => installer[name]),
+//       forceDownload
+//     )
+//     .catch(console.log);
+// };
 
 const createWindow = async () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
-    await installExtensions();
-  }
+  // if (
+  //   process.env.NODE_ENV === 'development' ||
+  //   process.env.DEBUG_PROD === 'true'
+  // ) {
+  //   await installExtensions();
+  // }
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
@@ -135,7 +135,8 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
-ipcMain.on('sync-file-directory', (event, arg) => {
+// ローカルリポジトリの取得
+ipcMain.on('sync-local-repository', (event, arg) => {
   fs.readdir('/Users/tech-camp/workspace', (err: any, files: string[]) => {
     if (err) {
       return err;
@@ -156,6 +157,13 @@ const gitRemoteURL = async (filePath: string) => {
 
 // ファイル名をもらって、リモートリポジトリのURLを返す
 ipcMain.on('sync-remote-repository', async (event, arg) => {
+  const fileName = arg;
+  const filePath = `/Users/tech-camp/workspace/${fileName}`;
+  const url: string = await gitRemoteURL(filePath);
+  event.returnValue = url;
+});
+
+ipcMain.on('sync-remote-repository-url', async (event, arg) => {
   const fileName = arg;
   const filePath = `/Users/tech-camp/workspace/${fileName}`;
   const url: string = await gitRemoteURL(filePath);

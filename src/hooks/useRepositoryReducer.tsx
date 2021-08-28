@@ -23,11 +23,20 @@ export const useRepositoryReducer = (): [
   const reducer = (state: Repository[], action: RepositoryDataAction) => {
     switch (action.type) {
       case 'fetch': {
-        const fileDirectory = ipcRenderer.sendSync('sync-file-directory', '');
-
-        return fileDirectory.split(',').map((file: string) => ({
+        const localRepository = ipcRenderer.sendSync(
+          'sync-local-repository',
+          ''
+        );
+        // const remoteRepository = ipcRenderer.sendSync(
+        //   'sync-remote-repository',
+        //   ''
+        // );
+        return localRepository.split(',').map((file: string) => ({
           folderName: file,
-          remoteOriginUrl: ipcRenderer.sendSync('sync-remote-repository', file),
+          remoteOriginUrl: ipcRenderer.sendSync(
+            'sync-remote-repository-url',
+            file
+          ),
         }));
       }
       default:

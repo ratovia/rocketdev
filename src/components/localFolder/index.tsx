@@ -27,7 +27,7 @@ const LocalFolder = ({ handleCurrentFolderChange }: Props) => {
   const [folders, setFolders] = useState([]);
 
   useEffect(() => {
-    const fileDirectory = ipcRenderer.sendSync('sync-file-directory', '');
+    const fileDirectory = ipcRenderer.sendSync('sync-local-repository', '');
     setFolders(fileDirectory.split(','));
   }, []);
 
