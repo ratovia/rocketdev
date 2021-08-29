@@ -4,6 +4,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import manualList from './list';
 
 const useStyles = makeStyles((theme) => ({
   menuContainer: {
@@ -17,10 +18,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const manualList = [
-  { name: 'React', url: 'https://ja.reactjs.org' },
-  { name: 'MaterialUI', url: 'https://material-ui.com' },
-];
 interface Props {
   handleCurrentManualURLChange: (url: string) => void;
 }
