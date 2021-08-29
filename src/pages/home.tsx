@@ -68,7 +68,7 @@ const Home = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [currentContents, setCurrentContents] = useState(DEFAULT_CONTENT);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };

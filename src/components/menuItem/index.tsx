@@ -21,16 +21,9 @@ type Lists = {
 const mainMenu: Lists[] = [
   { name: 'Github', menuIcons: <GitHubIcon /> },
   { name: 'Manuals', menuIcons: <LayersIcon /> },
-  { name: 'Customers', menuIcons: <PeopleIcon /> },
-  { name: 'Reports', menuIcons: <BarChartIcon /> },
-  { name: 'Integrations', menuIcons: <LayersIcon /> },
 ];
 
-const secondaryMenu: Lists[] = [
-  { name: 'Memo', menuIcons: <AssignmentIcon /> },
-  { name: 'Tasks', menuIcons: <AssignmentIcon /> },
-  { name: 'Calender', menuIcons: <AssignmentIcon /> },
-];
+const secondaryMenu: Lists[] = [];
 
 export const MainListItems = ({ handleChangeMenu }: Props) => {
   return (
