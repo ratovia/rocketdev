@@ -3,10 +3,7 @@ import { ipcRenderer } from 'electron';
 
 export interface RepositoryDataAction {
   type: 'fetch';
-  payload: {
-    folderName?: string;
-    remoteOriginUrl?: string;
-  };
+  payload?: Repositories;
 }
 
 export interface Repository {
@@ -14,30 +11,38 @@ export interface Repository {
   remoteOriginUrl: string;
 }
 
+export interface Repositories {
+  local: Repository[];
+  remote: Repository[];
+}
+
 export const useRepositoryReducer = (): [
-  Repository[],
+  Repositories,
   ({ type, payload }: RepositoryDataAction) => void
 ] => {
-  const initialData: Repository[] = [];
+  const initialData: Repositories = {
+    local: [],
+    remote: [],
+  };
 
-  const reducer = (state: Repository[], action: RepositoryDataAction) => {
+  const reducer = (state: Repositories, action: RepositoryDataAction) => {
     switch (action.type) {
       case 'fetch': {
-        const localRepository = ipcRenderer.sendSync(
-          'sync-local-repository',
-          ''
+        const localRepositoryString = ipcRenderer.sendSync(
+          'sync-local-repository'
         );
-        // const remoteRepository = ipcRenderer.sendSync(
-        //   'sync-remote-repository',
-        //   ''
-        // );
-        return localRepository.split(',').map((file: string) => ({
-          folderName: file,
-          remoteOriginUrl: ipcRenderer.sendSync(
-            'sync-remote-repository-url',
-            file
-          ),
-        }));
+        const localRepository = localRepositoryString
+          .split(',')
+          .map((file: string) => ({
+            folderName: file,
+            remoteOriginUrl: ipcRenderer.sendSync('sync-get-remote-url', file),
+          }));
+        const remoteRepository = ipcRenderer.sendSync('sync-remote-repository');
+        return {
+          ...state,
+          local: localRepository,
+          remote: remoteRepository,
+        };
       }
       default:
         return state;

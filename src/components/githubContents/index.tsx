@@ -8,27 +8,39 @@ import {
 
 const GithubContents = () => {
   const [repositories, repositoriesDispatch] = useRepositoryReducer();
-  const [currentFolder, setCurrentFolder] = useState('');
+  const [currentRepository, setCurrentRepository] = useState<
+    Repository | undefined
+  >(undefined);
 
-  const handleCurrentFolderChange = (folder: string) => {
-    setCurrentFolder(folder);
+  const handleCurrentRepositoryChange = (repo: Repository) => {
+    setCurrentRepository(repo);
   };
 
   useEffect(() => {
-    repositoriesDispatch({ type: 'fetch', payload: {} });
-  }, []);
+    repositoriesDispatch({ type: 'fetch' });
+  }, [repositories]);
 
-  const getMatchFolder: (folder: string) => Repository = (folder: string) => {
-    return repositories.filter(
-      (repository) => repository.folderName === folder
-    )[0];
+  const getMatchRepositoryUrl = (): string => {
+    const matchByLocal = repositories.local.filter(
+      (repository) => repository.folderName === currentRepository?.folderName
+    );
+    if (matchByLocal.length > 0) {
+      return matchByLocal[0].remoteOriginUrl;
+    }
+    const matchByRemote = repositories.remote.filter(
+      (repository) => repository.folderName === currentRepository?.folderName
+    );
+    if (matchByRemote.length > 0) {
+      return matchByRemote[0].remoteOriginUrl;
+    }
+    return '';
   };
   return (
     <>
-      <LocalFolder handleCurrentFolderChange={handleCurrentFolderChange} />
-      {currentFolder && (
-        <GithubWebview url={getMatchFolder(currentFolder).remoteOriginUrl} />
-      )}
+      <LocalFolder
+        handleCurrentRepositoryChange={handleCurrentRepositoryChange}
+      />
+      {currentRepository && <GithubWebview url={getMatchRepositoryUrl()} />}
     </>
   );
 };

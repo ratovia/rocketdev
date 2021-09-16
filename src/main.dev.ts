@@ -10,6 +10,7 @@
  */
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import axios from 'axios';
 import path from 'path';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
@@ -41,27 +42,7 @@ if (
   require('electron-debug')();
 }
 
-// const installExtensions = async () => {
-//   const installer = require('electron-devtools-installer');
-//   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-//   const extensions = ['REACT_DEVELOPER_TOOLS'];
-
-//   return installer
-//     .default(
-//       extensions.map((name) => installer[name]),
-//       forceDownload
-//     )
-//     .catch(console.log);
-// };
-
 const createWindow = async () => {
-  // if (
-  //   process.env.NODE_ENV === 'development' ||
-  //   process.env.DEBUG_PROD === 'true'
-  // ) {
-  //   await installExtensions();
-  // }
-
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
     : path.join(__dirname, '../assets');
@@ -135,17 +116,6 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
-// ローカルリポジトリの取得
-ipcMain.on('sync-local-repository', (event, arg) => {
-  fs.readdir('/Users/tech-camp/workspace', (err: any, files: string[]) => {
-    if (err) {
-      return err;
-    }
-    event.returnValue = files.join(',');
-    return true;
-  });
-});
-
 const gitRemoteURL = async (filePath: string) => {
   try {
     const git = simpleGit(filePath);
@@ -155,17 +125,38 @@ const gitRemoteURL = async (filePath: string) => {
   }
 };
 
-// ファイル名をもらって、リモートリポジトリのURLを返す
-ipcMain.on('sync-remote-repository', async (event, arg) => {
+// ローカルリポジトリの取得
+ipcMain.on('sync-local-repository', async (event) => {
+  fs.readdir('/Users/tech-camp/workspace', (err: string, files: string[]) => {
+    if (err) {
+      return err;
+    }
+    event.returnValue = files.join(',');
+    return true;
+  });
+});
+
+ipcMain.on('sync-get-remote-url', async (event, arg) => {
   const fileName = arg;
   const filePath = `/Users/tech-camp/workspace/${fileName}`;
   const url: string = await gitRemoteURL(filePath);
   event.returnValue = url;
 });
 
-ipcMain.on('sync-remote-repository-url', async (event, arg) => {
-  const fileName = arg;
-  const filePath = `/Users/tech-camp/workspace/${fileName}`;
-  const url: string = await gitRemoteURL(filePath);
-  event.returnValue = url;
+type Repository = {
+  name: string;
+  html_url: string;
+};
+
+ipcMain.on('sync-remote-repository', async (event) => {
+  const response = await axios.get(
+    'https://api.github.com/users/ratovia/repos'
+  );
+  const data = response.data.map((repo: Repository) => {
+    return {
+      folderName: repo.name,
+      remoteOriginUrl: repo.html_url,
+    };
+  });
+  event.returnValue = data;
 });
