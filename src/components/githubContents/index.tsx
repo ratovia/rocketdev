@@ -18,7 +18,8 @@ const GithubContents = () => {
 
   useEffect(() => {
     repositoriesDispatch({ type: 'fetch' });
-  }, [repositories]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getMatchRepositoryUrl = (): string => {
     const matchByLocal = repositories.local.filter(

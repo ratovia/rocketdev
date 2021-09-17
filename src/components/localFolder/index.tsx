@@ -5,6 +5,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import {
+  Repository,
+  useRepositoryReducer,
+} from '../../hooks/useRepositoryReducer';
 
 const useStyles = makeStyles((theme) => ({
   menuContainer: {
@@ -19,29 +23,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  handleCurrentFolderChange: (folder: string) => void;
+  handleCurrentRepositoryChange: (repository: Repository) => void;
 }
 
-const LocalFolder = ({ handleCurrentFolderChange }: Props) => {
+const LocalFolder = ({ handleCurrentRepositoryChange }: Props) => {
   const classes = useStyles();
-  const [folders, setFolders] = useState([]);
+  const [repositories, repositoriesDispatch] = useRepositoryReducer();
 
   useEffect(() => {
-    const fileDirectory = ipcRenderer.sendSync('sync-local-repository', '');
-    setFolders(fileDirectory.split(','));
+    repositoriesDispatch({ type: 'fetch' });
   }, []);
 
   return (
     <List className={classes.menuContainer}>
-      <ListSubheader inset>Local Folders</ListSubheader>
-      {folders.map((folder) => {
+      <ListSubheader inset>Local Repository</ListSubheader>
+      {repositories.local.map((repository: Repository) => {
         return (
           <ListItem
             button
-            key={folder}
-            onClick={() => handleCurrentFolderChange(folder)}
+            key={repository.folderName}
+            onClick={() => handleCurrentRepositoryChange(repository)}
           >
-            <ListItemText primary={folder} />
+            <ListItemText primary={repository.folderName} />
+          </ListItem>
+        );
+      })}
+      <ListSubheader inset>Remote Repository</ListSubheader>
+      {repositories.remote.map((repository: Repository) => {
+        return (
+          <ListItem
+            button
+            key={repository.folderName}
+            onClick={() => handleCurrentRepositoryChange(repository)}
+          >
+            <ListItemText primary={repository.folderName} />
           </ListItem>
         );
       })}
