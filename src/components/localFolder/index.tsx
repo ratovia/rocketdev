@@ -12,7 +12,7 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   menuContainer: {
-    height: 'calc(100vh - 60px)',
+    height: 'calc(100vh - 64px)',
     width: theme.spacing(30),
     borderRight: `1px solid ${theme.palette.divider}`,
     overflow: 'scroll',
@@ -36,7 +36,7 @@ const LocalFolder = ({ handleCurrentRepositoryChange }: Props) => {
 
   return (
     <List className={classes.menuContainer}>
-      <ListSubheader inset>Local Repository</ListSubheader>
+      <ListSubheader>Local Repository</ListSubheader>
       {repositories.local.map((repository: Repository) => {
         return (
           <ListItem
@@ -48,7 +48,7 @@ const LocalFolder = ({ handleCurrentRepositoryChange }: Props) => {
           </ListItem>
         );
       })}
-      <ListSubheader inset>Remote Repository</ListSubheader>
+      <ListSubheader>Remote Repository</ListSubheader>
       {repositories.remote.map((repository: Repository) => {
         return (
           <ListItem

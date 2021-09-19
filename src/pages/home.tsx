@@ -3,14 +3,12 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { MainListItems, SecondaryListItems } from '../components/menuItem';
 import Header from '../components/header';
 import GithubContents from '../components/githubContents';
 import ManualContents from '../components/manualContents';
+import SideBar from '../components/sideBar';
 
 const drawerWidth = 240;
 const DEFAULT_CONTENT = 'Github';
@@ -95,14 +93,7 @@ const Home = () => {
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        <Divider />
-        <List>
-          <MainListItems handleChangeMenu={handleChangeMenu} />
-        </List>
-        <Divider />
-        <List>
-          <SecondaryListItems handleChangeMenu={handleChangeMenu} />
-        </List>
+        <SideBar handleChangeMenu={handleChangeMenu} />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

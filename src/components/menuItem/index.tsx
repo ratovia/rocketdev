@@ -47,7 +47,6 @@ export const MainListItems = ({ handleChangeMenu }: Props) => {
 export const SecondaryListItems = ({ handleChangeMenu }: Props) => {
   return (
     <div>
-      <ListSubheader inset>Self Management</ListSubheader>
       {secondaryMenu.map((menu) => {
         return (
           <ListItem
